@@ -1,13 +1,11 @@
 <?php
 
-include ('../../Gateway/NewsGateway.php');
 class News
 {
-    private $title;
-    private $description;
-    private $date;
-    private $url;
-
+    public $title;
+    public $description;
+    public $date;
+    public $url;
 
     public function __construct($t,$d,$date,$url)
     {

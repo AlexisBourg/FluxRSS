@@ -1,12 +1,12 @@
 <?php
-include ('../Gateway/NewsGateway.php');
-include ('Metier/News.php');
+
+
 class ModelNews
 {
     private $gateway;
 
     public function __construct(){
-        $gateway= new NewsGateway();
+        $this->gateway= new NewsGateway();
     }
 
     public function SelectByIdNews($id):News{

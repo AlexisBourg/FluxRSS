@@ -1,13 +1,15 @@
 <?php
-require ('../Model/ModelUser.php');
-require_once('../Model/Connection.php');
+//require_once ('Model/ModelUser.php');
+//require_once('Model/Connection.php');
+
 class UserGateway
 {
     private $connection;
     private $user;
 
     public function __construct(){
-        $this->connection= new Connection('mysql:host=localhost;dname=projet','root','1234');
+        global $dsn,$login,$mdp;
+        $this->connection= new Connection($dsn,$login,$mdp);
     }
 
     public function insertUser($name,$firstname,$mail,$password):bool{

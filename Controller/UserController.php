@@ -1,18 +1,13 @@
 <?php
-require 'Model/ModelNews.php';
-require 'Model/ModelUser.php';
-require 'Model/Metier/User.php';
-require 'Gateway/UserGateway.php';
-require 'Model/ModelNews.php';
 
 class UserController
 {
-
     public function __construct(){
-        $action =$_GET['action'] ?? null;
+        global $rep,$vues;
+        $action=$_GET['action'] ?? null;
         try {
             switch (strtolower($action)){
-                case null:
+                case NULL:
                 case 'displayAll':
                     $this->displayAll();
                     break;
@@ -26,45 +21,52 @@ class UserController
                     $this->inscription();
                     break;
                 default:
-                    require('../Vues/erreur.php');
-
             }
         }catch (PDOException $e){
-            $erreur='Erreur de base de donnée';
-            require('../Vues/erreur.php');
+            $tVueErreur[]=$e->getMessage();      //'Erreur de base de donnée';
+            require($rep.$vues['erreur']);
         }catch (Exception $e){
-            $erreur='Autre erreur';
-            require('../Vues/erreur.php');
+            $tVueErreur[]= 'Autre erreur';
+            require($rep.$vues['erreur']);
         }
     }
 
     public function displayAll(){
+        global $rep,$vues;
         $mdlN= new ModelNews();
-        $lNews[] = $mdlN->getAllNews();
-        require(' ../Vues/listeNews.php');
+        $listN= $mdlN->getAllNews();
+        require($rep . $vues['user']);
     }
 
     public function openNews(){
+        global $rep,$vues;
         $id= $_GET['id'] ?? null;
         if($id === null) {
             $erreur = 'La news n\'existe pas';
-            require('../Vues/erreur.php');
+            require($rep . $vues['erreur']);
         }
         else{
             $mdl= new ModelNews();
-            $news= $mdl->SelectByIdNews($id );
-            header('Location: ' . $news->geturl());
+            $news= $mdl->SelectByIdNews($id);
+            header('Location: '.$news->geturl());
         }
     }
 
-    public function connection(){
-        // TODO ajouter la validation
-
+    public function connection($mail,$password){
+        global $rep,$vues;
+        $mailClean= Clean::mailClean($mail);
+        $passwordClean = Clean::stringClean($password);
         $mdl= new ModelUser();
-        $mdl->connection();
+        if($mdl->connection($mailClean,$passwordClean)){
+            require ($rep . $vues['admin']);
+        }
+        else{
+            require ($rep . $vues['erreur']);
+        }
     }
 
     public function inscription($name,$firstname,$mail,$password){
+        Validation::val_form($name,$firstname,$mail,$password);
         $mdl= new ModelUser();
         $mdl->inscription($name,$firstname,$mail,$password);
     }
@@ -73,5 +75,4 @@ class UserController
         $mdl= new ModelUser();
         return $mdl->isAdmin();
     }
-
 }

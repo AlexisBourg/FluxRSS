@@ -1,13 +1,13 @@
 <?php
 
-require_once('../Model/Connection.php');
-class newsGateway
+class NewsGateway
 {
     private $connection;
     private $tabN;
 
     public function __construct(){
-        $this->connection= new Connection('mysql:host=localhost;dname=projet','root','1234');
+        global $dsn,$login,$mdp;
+        $this->connection= new Connection($dsn,$login,$mdp);
     }
 
     public function SelectByIdNews($id):News{
@@ -23,9 +23,9 @@ class newsGateway
         $this->connection->executeQuery($query,array());
         $res=$this->connection->getResults();
         foreach ($res as $row){
-            $this->tabN[]= new News($row['']);              //a compléter
+            $tabN[]= new News($row['Title'],$row['Description'],$row['Date'],$row['URL']);
         }
-        return $this->tabN;
+        return $tabN;
     }
 
     public function deleteNews($News){

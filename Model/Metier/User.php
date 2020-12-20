@@ -28,7 +28,7 @@ class User
     /**
      * @param mixed $password
      */
-    public function setpassword($password)
+    public function setPassword($password)
     {
         $this->password = $password;
     }
@@ -43,7 +43,7 @@ class User
     /**
      * @return mixed
      */
-    public function getname()
+    public function getName()
     {
         return $this->name;
     }
@@ -51,7 +51,7 @@ class User
     /**
      * @return mixed
      */
-    public function getfirstname()
+    public function getFirstName()
     {
         return $this->firstname;
     }

@@ -1,20 +1,47 @@
 <?php
-
-
-namespace config;
-
 //TODO a terminer
-class Autoloader
-{
-    public static function load($class){
-        spl_autoload_register(function ($class) {
-            $file = str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
-            if (file_exists($file)) {
-                require $file;
-                return true;
-            }
-            return false;
-        });
-    }
+    class Autoloader
+    {
+        private static $_instance=null;
 
-}
+        public static function load()
+        {
+            if(null !== self::$_instance){
+                throw new RuntimeException(sprintf('%s is already started', __CLASS__));
+            }
+
+            self::$_instance = new self();
+
+            if(!spl_autoload_register(array(self::$_instance, '_autoload'),false)){
+                throw RuntimeException(sprintf('%s : Could not start the autoload', __CLASS__));
+            }
+        }
+
+        public static function shutDown()
+        {
+            if(null !== self::$_instance) {
+
+                if(!spl_autoload_unregister(array(self::$_instance, '_autoload'))) {
+                    throw new RuntimeException('Could not stop the autoload');
+                }
+
+                self::$_instance = null;
+            }
+        }
+
+        private static function _autoload($class)
+        {
+            global $rep;                            // récupère var. globales
+            $filename = $class.'.php';
+            $dir = array('Model/','Model/Metier/', './', 'Config/', 'Controller/','Vues/','Gateway/');
+            foreach ($dir as $d) {
+                $file = $rep.$d.$filename;
+                //echo $file;
+                if (file_exists($file)) {
+                    include $file;
+                }
+            }
+        }
+    }
+?>
+
