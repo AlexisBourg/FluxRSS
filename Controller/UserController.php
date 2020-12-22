@@ -2,11 +2,13 @@
 
 class UserController
 {
-    public function __construct(){
-        global $rep,$vues;
-        $action=$_GET['action'] ?? null;
+    public function __construct()
+    {
+        global $rep, $vues, $tVueErreur;
+        $action = $_REQUEST['action'] ?? null;
         try {
-            switch (strtolower($action)){
+
+            switch (strtolower($action)) {
                 case NULL:
                 case 'displayAll':
                     $this->displayAll();
@@ -15,64 +17,68 @@ class UserController
                     $this->openNews();
                     break;
                 case 'connection':
-                    $this->connection();
-                    break;
-                case 'inscription':
-                    $this->inscription();
+                    $this->connection($tVueErreur);
                     break;
                 default:
             }
-        }catch (PDOException $e){
-            $tVueErreur[]=$e->getMessage();      //'Erreur de base de donnée';
-            require($rep.$vues['erreur']);
-        }catch (Exception $e){
-            $tVueErreur[]= 'Autre erreur';
-            require($rep.$vues['erreur']);
+        } catch (PDOException $e) {
+            $tVueErreur[] = $e->getMessage();      //'Erreur de base de donnée';
+            require($rep . $vues['error']);
+        } catch (Exception $e) {
+            $tVueErreur[] = 'Autre erreur';
+            require($rep . $vues['error']);
         }
     }
 
-    public function displayAll(){
-        global $rep,$vues;
-        $mdlN= new ModelNews();
-        $listN= $mdlN->getAllNews();
+    public function displayAll()
+    {
+        global $rep, $vues;
+        $mdlN = new ModelNews();
+        $listN = $mdlN->getAllNews();
         require($rep . $vues['user']);
     }
 
-    public function openNews(){
-        global $rep,$vues;
-        $id= $_GET['id'] ?? null;
-        if($id === null) {
-            $erreur = 'La news n\'existe pas';
-            require($rep . $vues['erreur']);
-        }
-        else{
-            $mdl= new ModelNews();
-            $news= $mdl->SelectByIdNews($id);
-            header('Location: '.$news->geturl());
-        }
-    }
-
-    public function connection($mail,$password){
-        global $rep,$vues;
-        $mailClean= Clean::mailClean($mail);
-        $passwordClean = Clean::stringClean($password);
-        $mdl= new ModelUser();
-        if($mdl->connection($mailClean,$passwordClean)){
-            require ($rep . $vues['admin']);
-        }
-        else{
-            require ($rep . $vues['erreur']);
+    public function openNews()
+    {
+        global $rep, $vues;
+        $id = $_GET['id'] ?? null;
+        if ($id === null) {
+            $tVueErreur[] = 'La news n\'existe pas';
+            require($rep . $vues['error']);
+        } else {
+            $mdl = new ModelNews();
+            $news = $mdl->SelectByIdNews($id);
+            header('Location: ' . $news->geturl());
         }
     }
 
-    public function inscription($name,$firstname,$mail,$password){
-        Validation::val_form($name,$firstname,$mail,$password);
-        $mdl= new ModelUser();
-        $mdl->inscription($name,$firstname,$mail,$password);
+    public function connection($tVueErreur)
+    {
+        global $rep, $vues;
+        $mail = $_POST['email'];
+        $password = $_POST['psw'];
+        Validation::val_form2($mail, $password, $tVueErreur);
+        $mdl = new ModelUser();
+        if ($mdl->connection($mail, $password)) {
+            require($rep . $vues['admin']);
+        } else {
+            echo "Identifiant ou mot de passe incorrect";
+            require($rep . $vues['user']);
+
+        }
     }
 
-    public function isAdmin():bool{
-        $mdl= new ModelUser();
+    public function inscription($name, $firstname, $mail, $password)
+    {
+        global $tVueErreur;
+        Validation::val_form($name, $firstname, $mail, $password);
+        $mdl = new ModelUser();
+        $mdl->inscription($name, $firstname, $mail, $password);
+    }
+
+    public function isAdmin(): bool
+    {
+        $mdl = new ModelUser();
         return $mdl->isAdmin();
     }
 }

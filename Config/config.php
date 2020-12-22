@@ -6,7 +6,12 @@
     $login="root";
     $mdp="1234";
 //Vues
-    $vues['erreur']="Vues/Erreur.php";
+    $vues['error']="Vues/error.php";
     $vues['admin']="Vues/admin.php";
     $vues['user']="Vues/user.php";
+    $vues['toLogIn']="Vues/toLogIn.php";
+    $vues['index']="index.php";
+
+    //Erreur
+
 ?>

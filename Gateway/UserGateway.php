@@ -32,13 +32,13 @@ class UserGateway
         ));
     }
 
-    public function SelectUserByMailPassword($mail,$password):User{
-        $query='SELECT * FROM User WHERE mail=:mail AND password=:password';
+    public function SelectUserByMailPassword($mail,$password):int{
+        $query='SELECT count(*) FROM User WHERE mail=:mail AND password=:password';
         $this->connection->executeQuery($query,array(
             ':mail'=>array($mail,PDO::PARAM_STR),
             ':password'=>array($password,PDO::PARAM_STR)
         ));
-        $this->user=$this->connection->getResults();
-        return $this->user;
+        $nb=$this->connection->getResults();
+        return $nb[0]["count(*)"];
     }
 }

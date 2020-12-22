@@ -3,11 +3,19 @@
 
 class AdminController extends UserController
 {
-
     public function __construct(){
+        global $rep,$vues;
         $action =$_GET['action'] ?? null;
         try {
+            $this->displayAll();
             switch (strtolower($action)){
+                /*case NULL:
+                case 'displayAll':
+
+                    break;*/
+                case 'openNews':
+                    $this->openNews();
+                    break;
                 case'addRSSflux':
                     $this->addFlux();
                     break;
@@ -24,20 +32,22 @@ class AdminController extends UserController
                     $this->delAdmin();
                     break;
                 default:
-                    require('../Vues/erreur.php');
+                    require($rep . $vues['error']);
             }
         }catch (PDOException $e){
-            $erreur='Erreur de base de donnée';
-            require('../Vues/erreur.php');
+            $tVueErreur[]='Erreur de base de donnée';
+            require($rep . $vues['error']);
         }catch (Exception $e){
-            $erreur='Autre erreur';
-            require('../Vues/erreur.php');
+            $tVueErreur[]='Autre erreur';
+            require($rep . $vues['error']);
         }
     }
 
     public function deconnection(){
+        global $vues,$rep;
         $mld = new ModelUser();
         $mld->deconnection();
+        require ($rep . $vues['user']);
     }
     public function addAdmin($name,$firstname,$mail,$password):bool{
         $mld= new ModelUser();

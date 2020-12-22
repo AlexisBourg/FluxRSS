@@ -17,16 +17,18 @@
                 try {
                     if (array_search($action, $listAction_Admin)) {
                         if ($mdl->isAdmin()) {
-                            require('Vues/admin.php');
-                        } else {
                             new AdminController();
+                        }
+                        else{
+                            $tVueErreur="Erreur de droit";
+                            require ($rep . $vues['error']);
                         }
                     } else {
                         new UserController();
                     }
                 } catch (Exception $e) {
                     $tVueErreur[] =	"Erreur d'appel php";
-                    require ($rep.$vues['erreur']);
+                    require ($rep.$vues['error']);
                 }
             }
 

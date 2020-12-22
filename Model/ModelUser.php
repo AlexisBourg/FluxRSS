@@ -17,14 +17,13 @@ class ModelUser
         $this->gateway->deleteUser($User);
     }
 
-    public function SelectUserByMailPassword($User):User{
+    /*public function SelectUserByMailPassword($User):User{
         return $this->gateway->SelectUserByMailPassword($User->getMail(),$User->getPassword());
-    }
+    }*/
 
     public function connection($mail,$password):bool{
         $res = $this->gateway->SelectUserByMailPassword($mail, $password);
-        if ($res == null){
-            //require('../Vues/Erreur.php');
+        if ($res == 0 ){
             return false;
         }
         else{
@@ -32,14 +31,14 @@ class ModelUser
             $_SESSION['login']=$mail;
             return true;
         }
+        
     }
 
     public function inscription($name,$firstname,$mail,$password):bool{
         if(!$this->gateway->insertUser($name,$firstname,$mail,$password)){
             return false;
         }
-        $_SESSION['role']="admin";
-        $_SESSION['login']=$mail;
+        echo "utilisateur ajouter";
         return true;
     }
 
