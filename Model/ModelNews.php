@@ -21,11 +21,15 @@ class ModelNews
         $this->gateway->insertNews($news);
     }
 
-    public function deleteNews($news){
-        $this->gateway->deleteNews($news);
+    public function dropNews(){
+        $this->gateway->dropNews();
     }
 
     public function countNews():int{
         return $this->gateway->countNews();
+    }
+
+    public function getNbNews($first,$nb):array{
+        return $this->gateway->SelectNbNews($first,$nb);
     }
 }

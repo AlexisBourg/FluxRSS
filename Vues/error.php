@@ -13,7 +13,7 @@
                 <?php
                 if (isset($tVueErreur)) {
                     foreach ($tVueErreur as $value) {
-                        echo $value;
+                        echo $value . "<br/>";
                     }
                 }
                 ?>

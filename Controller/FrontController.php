@@ -8,11 +8,12 @@
             $tVueErreur =array();
 
            if(!isset($_REQUEST['action'])){
+
                 new UserController();
             }
             else {
-                $action = strtolower($_REQUEST['action']) ?? null;
-                $listAction_Admin = ['addRSSflux', 'delFlux', 'deconnection', 'addAdmin', 'delAdmin'];
+                $action=$_REQUEST['action'];
+                $listAction_Admin = ['','disconnection', 'addAdmin', 'delAdmin','delNews','upNbNPage','addFlux','delFlux'];
                 $mdl = new ModelUser();
                 try {
                     if (array_search($action, $listAction_Admin)) {
@@ -20,13 +21,14 @@
                             new AdminController();
                         }
                         else{
-                            $tVueErreur="Erreur de droit";
+                            $tVueErreur[]="Erreur de droit";
                             require ($rep . $vues['error']);
                         }
                     } else {
                         new UserController();
                     }
                 } catch (Exception $e) {
+                    echo $e->getMessage();
                     $tVueErreur[] =	"Erreur d'appel php";
                     require ($rep.$vues['error']);
                 }

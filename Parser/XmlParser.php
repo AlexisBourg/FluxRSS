@@ -4,7 +4,7 @@
  * Classe parsant un fichier xml et affichant les informations sous la forme
  * d'une hierarchie de texte
  */
-class XmlParserExample1 {
+class XmlParser {
     private $path;
     private $result;
     private $depth;

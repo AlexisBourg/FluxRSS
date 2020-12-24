@@ -12,7 +12,6 @@ class Validation
 
     static function val_form(string &$name, string &$firstname, string &$Mail, string &$password, &$tVueEreur)
     {
-
         if (!isset($name) || $name == "") {
             $tVueEreur[] = "pas de nom";
             $name = "";
@@ -48,8 +47,7 @@ class Validation
             $pasword = "";
         }
 
-        if ($password != filter_var($password, FILTER_SANITIZE_STRING))
-        {
+        if ($password != filter_var($password, FILTER_SANITIZE_STRING)) {
             $tVueEreur[] = "testative d'injection de code (attaque sécurité)";
             $password = "";
         }
@@ -79,5 +77,52 @@ class Validation
         }
     }
 
+    static function val_int(int &$i, &$tVueErreur)
+    {
+        if (!isset($i) || $i == "") {
+            $tVueErreur[] = "pas de numero";
+            $i = 10;
+        }
+
+        if ($i != filter_var($i, FILTER_SANITIZE_NUMBER_INT)) {
+            $tVueEreur[] = "testative d'injection de code (attaque sécurité)";
+            $i = 10;
+        }
+    }
+
+    static function val_flux(string &$title, string &$url,&$tVueErreur)
+    {
+        if (!isset($title) || $title == "") {
+            $tVueEreur[] = "pas de titre";
+            $title = "";
+        }
+
+        if ($title != filter_var($title, FILTER_SANITIZE_STRING)) {
+            $tVueEreur[] = "testative d'injection de code (attaque sécurité)";
+            $title = "";
+        }
+
+        if (!isset($url) || $url == "") {
+            $tVueErreur[] = "pas d'url";
+            $url = "";
+        }
+
+        if ($url != filter_var($url, FILTER_SANITIZE_URL)) {
+            $tVueErreur[] = "testative d'injection de code (attaque sécurité)";
+            $url = "";
+        }
+    }
+
+    static function val_sting(&$s,&$tVueErreur){
+        if (!isset($s) || $s == "") {
+            $tVueErreur[] = "pas de text";
+            $s = "";
+        }
+
+        if ($s != filter_var($s, FILTER_SANITIZE_STRING)) {
+            $tVueErreur[] = "testative d'injection de code (attaque sécurité)";
+            $s = "";
+        }
+    }
 }
 ?>

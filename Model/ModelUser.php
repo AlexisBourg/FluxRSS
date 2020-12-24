@@ -17,6 +17,10 @@ class ModelUser
         $this->gateway->deleteUser($User);
     }
 
+    public function deleteNews($news){
+        $this->gateway->deleteNews($news);
+    }
+
     /*public function SelectUserByMailPassword($User):User{
         return $this->gateway->SelectUserByMailPassword($User->getMail(),$User->getPassword());
     }*/
@@ -43,7 +47,7 @@ class ModelUser
     }
 
     public function isAdmin():bool{
-        if(isset($_SESSION['login'])&& isset($_SESSION['role']) && $_SESSION['role']=="admin"){
+        if(isset($_SESSION['role']) && $_SESSION['role']=="admin"){
             return true;
         }
         return false;

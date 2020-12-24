@@ -33,7 +33,7 @@
         {
             global $rep;                            // récupère var. globales
             $filename = $class.'.php';
-            $dir = array('Model/','Model/Metier/', './', 'Config/', 'Controller/','Vues/','Gateway/');
+            $dir = array('Model/','Model/Metier/','Parser/', './', 'Config/', 'Controller/','Vues/','Gateway/');
             foreach ($dir as $d) {
                 $file = $rep.$d.$filename;
                 //echo $file;
