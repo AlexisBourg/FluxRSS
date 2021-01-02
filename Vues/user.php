@@ -59,7 +59,7 @@ if (isset($listN)) {
                     <tbody>";
     foreach ($listN as $ln) {
         echo "      <tr>
-                        <td>Date :" . $ln->getDate() . " &nbsp;</td>
+                        <td>" . $ln->getDate() . " &nbsp;</td>
                         <td><a href=" . $ln->getUrl() . ">  " . $ln->getTitle() . "</a>&nbsp;</td>
                         <td><a href=" . $ln->getUrl() . ">   " . $ln->getDescription() . "</a>&nbsp;</td>
                     </tr>";

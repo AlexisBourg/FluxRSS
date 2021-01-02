@@ -12,7 +12,7 @@
     $vues['index']="index.php";
 
 //Autre
-
+    $tVueErreur=array();
 
 
 ?>

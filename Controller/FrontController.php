@@ -3,9 +3,7 @@
     {
         public function __construct(){
             session_start();
-            global $rep,$vues;
-
-            $tVueErreur =array();
+            global $rep,$vues,$tVueErreur;
 
            if(!isset($_REQUEST['action'])){
 
